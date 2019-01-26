@@ -18,62 +18,91 @@ package org.oscim.test;
 
 import com.badlogic.gdx.Input;
 
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+
+import java.io.File;
+import java.util.UUID;
+
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.renderer.MapRenderer;
+import org.oscim.tiling.TileSource;
+import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 
 public class BitmapTileTest extends GdxMapApp {
 
-    private BitmapTileLayer mLayer = null;
-    private BitmapTileLayer mShaded = null;
+   private BitmapTileLayer mLayer = null;
+   private BitmapTileLayer mShaded = null;
+   private BitmapTileLayer _layer_HillShadingLayer = null;
 
-    @Override
-    protected boolean onKeyDown(int keycode) {
-        if (keycode == Input.Keys.NUM_1) {
+
+   @Override
+   protected boolean onKeyDown(int keycode) {
+      if (keycode == Input.Keys.NUM_1) {
+         mMap.layers().remove(mShaded);
+         mShaded = null;
+         mMap.layers().remove(mLayer);
+         mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build(), 4000000);
+         mMap.layers().add(mLayer);
+         mMap.clearMap();
+
+         return true;
+      } else if (keycode == Input.Keys.NUM_2) {
+         mMap.layers().remove(mShaded);
+         mShaded = null;
+         mMap.layers().remove(mLayer);
+         mLayer = new BitmapTileLayer(mMap, DefaultSources.STAMEN_TONER.build(), 4000000);
+         mMap.layers().add(mLayer);
+         mMap.clearMap();
+         return true;
+      } else if (keycode == Input.Keys.NUM_3) {
+         if (mShaded != null) {
             mMap.layers().remove(mShaded);
             mShaded = null;
-            mMap.layers().remove(mLayer);
-            mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build(), 4000000);
-            mMap.layers().add(mLayer);
-            mMap.clearMap();
-            
-            return true;
-        } else if (keycode == Input.Keys.NUM_2) {
-            mMap.layers().remove(mShaded);
-            mShaded = null;
-            mMap.layers().remove(mLayer);
-            mLayer = new BitmapTileLayer(mMap, DefaultSources.STAMEN_TONER.build(), 4000000);
-            mMap.layers().add(mLayer);
-            mMap.clearMap();
-            return true;
-        } else if (keycode == Input.Keys.NUM_3) {
-            if (mShaded != null) {
-                mMap.layers().remove(mShaded);
-                mShaded = null;
-            } else {
-                mShaded = new BitmapTileLayer(mMap, DefaultSources.HIKEBIKE_HILLSHADE.build(), 4000000);
-                mMap.layers().add(mShaded);
-            }
-            mMap.clearMap();
-            return true;
-        }
+         } else {
+            mShaded = new BitmapTileLayer(mMap, DefaultSources.HIKEBIKE_HILLSHADE.build(), 4000000);
+            mMap.layers().add(mShaded);
+         }
+         mMap.clearMap();
+         return true;
+      }
 
-        return false;
-    }
+      return false;
+   }
 
-    
-    @Override
-    public void createLayers() {
-        MapRenderer.setBackgroundColor(0xff888888);
-        mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build(), 4000000);
-        //mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build());
-        mMap.layers().add(mLayer);
+   @Override
+   public void createLayers() {
 
-    }
+      OkHttpClient.Builder builder = new OkHttpClient.Builder();
+      //File cacheDirectory = new File(System.getProperty("java.io.tmpdir") + "vtm-cache" , UUID.randomUUID().toString());
+      File cacheDirectory = new File(System.getProperty("java.io.tmpdir") + "vtm-cache");
+      System.out.println("caching to: " + cacheDirectory.toString());
+      int cacheSize = 32 * 1024 * 1024; // 32 MB
+      Cache cache = new Cache(cacheDirectory, cacheSize);
+      builder.cache(cache);
+      OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory(builder);
+      TileSource hillshadingSource =  DefaultSources.HIKEBIKE_HILLSHADE
+            .httpFactory(factory)
+            .zoomMin(1)
+            .zoomMax(16)
+            .build();
+      
+      MapRenderer.setBackgroundColor(0xff888888);
+      _layer_HillShadingLayer = new BitmapTileLayer(mMap, hillshadingSource, 4000000);
+      
+      mMap.layers().add(_layer_HillShadingLayer);
 
-    public static void main(String[] args) {
-        GdxMapApp.init();
-        GdxMapApp.run(new BitmapTileTest(), null, 256);
-    }
+
+      //MapRenderer.setBackgroundColor(0xff888888);
+      //mLayer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build(), 4000000);
+      //mMap.layers().add(mLayer);
+
+   }
+
+   public static void main(String[] args) {
+      GdxMapApp.init();
+      GdxMapApp.run(new BitmapTileTest(), null, 256);
+   }
 }

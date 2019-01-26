@@ -112,6 +112,7 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	
 	private JFrame _pleaseWaitFrame;
 	private JDialog _pleaseWaitDialog;
+	private JLabel _pleaseWaitLabel;
 
 	
 	float angle = 0;
@@ -131,24 +132,34 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	 * {@link http://www.java2s.com/Tutorials/Java/Swing_How_to/JFrame/Create_Modeless_and_model_Dialog_from_JFrame.htm}
 	 */
 	public void pleaseWaitWindow(Boolean show) {
-
 		_pleaseWaitDialog.setVisible(show);
 		_pleaseWaitFrame.setVisible(show);
 	}
+
+   public void pleaseWaitWindow(Boolean show, String Text) {
+      _pleaseWaitLabel.setText(Text);
+      pleaseWaitWindow(show);
+   }	
+	
+	public void init_pleaseWaitWindow() {
+	   _pleaseWaitLabel = new JLabel("loading theme, please be patient");
+	   
+      _pleaseWaitFrame = new JFrame();
+      _pleaseWaitFrame.setUndecorated(true);
+      _pleaseWaitFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      _pleaseWaitFrame.pack();
+
+      _pleaseWaitDialog = new JDialog(_pleaseWaitFrame, "Please Wait...", ModalityType.MODELESS);
+      _pleaseWaitDialog.setLayout(new FlowLayout());
+      _pleaseWaitDialog.add(_pleaseWaitLabel);
+      _pleaseWaitDialog.add(Box.createRigidArea(new Dimension(200, 50)));
+      _pleaseWaitDialog.pack();
+      _pleaseWaitDialog.setLocationRelativeTo(null);
+   }
 	
 	@Override
 	public void createLayers() {
-		_pleaseWaitFrame = new JFrame();
-		_pleaseWaitFrame.setUndecorated(true);
-		_pleaseWaitFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		_pleaseWaitFrame.pack();
-
-		_pleaseWaitDialog = new JDialog(_pleaseWaitFrame, "Non-Modal Dialog", ModalityType.MODELESS);
-		_pleaseWaitDialog.setLayout(new FlowLayout());
-		_pleaseWaitDialog.add(new JLabel("loading theme, please be patient"));
-		_pleaseWaitDialog.add(Box.createRigidArea(new Dimension(200, 50)));
-		_pleaseWaitDialog.pack();
-		_pleaseWaitDialog.setLocationRelativeTo(null);
+	   init_pleaseWaitWindow();
 			    
 		MapRenderer.setBackgroundColor(0xff888888);
 
@@ -157,8 +168,8 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		//MapFileTileSource _tileSourceOfflineMM = new MapFileTileSource();
 		//tileSourceOfflineMM = new MultiMapFileTileSource(MultiMapDataStore.DataPolicy.RETURN_ALL);
 		
-		//_tileSourceOffline = new MapFileTileSource();
-		//_tileSourceOffline.setMapFile(mapFile);
+		_tileSourceOffline = new MapFileTileSource();
+		_tileSourceOffline.setMapFile(mapFile);
 		
 		//_tileSourceOffline.setPreferredLanguage("de");
 	
@@ -331,18 +342,26 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		case Input.Keys.NUM_3:
 			mMap.setTheme(VtmThemes.OSMARENDER);
 			return true;
-		case Input.Keys.NUM_7:
-			//l = mMap.setBaseMap(tileSourceOffline);
+		case Input.Keys.A:
+			_l = mMap.setBaseMap(_tileSourceOffline);
 			//loadTheme("1");
 			//mMap.clearMap();
 			pleaseWaitWindow(true);
 			return true;
-		case Input.Keys.NUM_8:
-			//l = mMap.setBaseMap(tileSourceOnline);
+		case Input.Keys.B:
+			_l = mMap.setBaseMap(_tileSourceOnline);
 			//loadTheme("2");
 			//mMap.clearMap();
 			pleaseWaitWindow(false);
 			return true;
+      case Input.Keys.C:
+         _l = mMap.setBaseMap(_tileSourceOnline);
+         //loadTheme("2");
+         //mMap.clearMap();
+         pleaseWaitWindow(true,"oooops");
+         return true;			
+			
+			
 		case Input.Keys.NUM_9:
 			return true;
 		}
