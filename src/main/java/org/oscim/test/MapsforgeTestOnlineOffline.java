@@ -82,8 +82,8 @@ import javax.swing.JOptionPane;
 
 public class MapsforgeTestOnlineOffline extends GdxMapApp {
 
-	//public static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
-	public static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map";
+	public static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
+	//public static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map";
 	//public static String mapFile = "C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\hamburg_ML.map";
 	//public static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\niedersachsen_V5.map";
 	//public static String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
@@ -97,14 +97,10 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	//public static MapFileTileSource _tileSourceOffline;
 	
 	private MapFileTileSource _tileSourceOffline;
-	private MultiMapFileTileSource _tileSourceOfflineMM;
 	
 	//private BitmapTileLayer mLayer = null;
 	private BitmapTileLayer _layer_HillShadingLayer = null;
 	private BitmapTileLayer _layer_OSM_Layer = null;
-	
-	//private OpenResult _mOpenResult;
-	//private FileFilter MapFileExtension;
 	
 	//private S3DBLayer l_s3db;
 
@@ -113,9 +109,6 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	private JFrame _pleaseWaitFrame;
 	private JDialog _pleaseWaitDialog;
 	private JLabel _pleaseWaitLabel;
-
-	
-	float angle = 0;
 
 	MapsforgeTestOnlineOffline(String mapFile) {
 		this(mapFile, false);
@@ -162,11 +155,6 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	   init_pleaseWaitWindow();
 			    
 		MapRenderer.setBackgroundColor(0xff888888);
-
-		_tileSourceOfflineMM = getMapFile(mapFile);
-		
-		//MapFileTileSource _tileSourceOfflineMM = new MapFileTileSource();
-		//tileSourceOfflineMM = new MultiMapFileTileSource(MultiMapDataStore.DataPolicy.RETURN_ALL);
 		
 		_tileSourceOffline = new MapFileTileSource();
 		_tileSourceOffline.setMapFile(mapFile);
@@ -205,24 +193,20 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		//S3DBLayer l_s3db = new S3DBLayer(mMap,TileSourceS3DB);
 
 		//l = mMap.setBaseMap(tileSourceOnline);
-		//l = mMap.setBaseMap(tileSourceOffline);
+		_l = mMap.setBaseMap(_tileSourceOffline);
 
-		//ITileCache cache;
-		//_layer_HillShadingLayer = new BitmapTileLayer(mMap, DefaultSources.HIKEBIKE_HILLSHADE.build(), 4000000);
 		_layer_HillShadingLayer = new BitmapTileLayer(mMap, hillshadingSource, 4000000);
 		
-		mMap.layers().add(_layer_HillShadingLayer);
+		//mMap.layers().add(_layer_HillShadingLayer);
 		
-		_layer_OSM_Layer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build(), 4000000);
+		//_layer_OSM_Layer = new BitmapTileLayer(mMap, DefaultSources.OPENSTREETMAP.build(), 4000000);
 		//mMap.layers().add(_layer_OSM_Layer);
 
 		if (s3db) {
-			//_l = mMap.setBaseMap(_tileSourceOffline);
-			_l = mMap.setBaseMap(_tileSourceOfflineMM);
+			_l = mMap.setBaseMap(_tileSourceOffline);
 			mMap.layers().add(new S3DBLayer(mMap, _l));}
 		else {
 			_l = mMap.setBaseMap(_tileSourceOnline);
-			//mMap.layers().add(l_s3db);
 			mMap.layers().add(new BuildingLayer(mMap, _l));}
 
 		loadTheme(null);
@@ -262,52 +246,7 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	}
 
 	
-	/**
-	 * gget a sorted list with mapsforgemap files
-	 * @param <MultiMapDataStore>
-	 * @param filename
-	 * @return files[]
-	 * {@link http://www.avajava.com/tutorials/lessons/how-do-i-sort-an-array-of-files-according-to-their-sizes.html}
-	 * 
-	 */
-	public MultiMapFileTileSource getMapFile(String filename) {
-		int minZoom = 8;
-		int maxZoom = 15;
-		File file = new File(filename);
-		File directory = new File(file.getParent());
-		File[] files = directory.listFiles(new FilenameFilter() {
-		    public boolean accept(File directory, String name) {
-		        return name.toLowerCase().endsWith(".map");
-		    }
-		});
-		
-		System.out.println("basepath: " + directory);
 
-		//Arrays.sort(files, SizeFileComparator.SIZE_COMPARATOR); // sort mapsfiles size
-		
-		MultiMapFileTileSource mMFileTileSource = new MultiMapFileTileSource (minZoom,maxZoom);   //DataPolicy.RETURN_ALL);
-		MapFileTileSource tileSourceOfflinePrimary = new MapFileTileSource(minZoom,maxZoom);
-		tileSourceOfflinePrimary.setMapFile(file.getAbsolutePath());
-		tileSourceOfflinePrimary.setPreferredLanguage("de");
-		mMFileTileSource.add(tileSourceOfflinePrimary);   // adding primary map first
-		//System.out.println("Adding: " + file + " size: " +  	FileUtils.byteCountToDisplaySize(file.length()) + "(" + file.length() + " bytes)");
-		System.out.println("Adding: " + file + " size: " +  file.length() + " bytes)");
-		for (File f : files)
-      {
-			if(checkMapFile(f)) {
-				if(!f.getAbsolutePath().equalsIgnoreCase(filename)) { //add all mapfiles except the primary map, which is already added
-					MapFileTileSource tileSourceOffline = new MapFileTileSource(minZoom,maxZoom);
-					tileSourceOffline.setMapFile(f.getAbsolutePath());
-					mMFileTileSource.add(tileSourceOffline);
-					//long size = FileUtils.sizeOf(f);
-					//System.out.println("Adding: " + f + " size: " +  	FileUtils.byteCountToDisplaySize(size) + "(" + size + " bytes)");
-					System.out.println("Adding: " + f + " size: " +  f.length() + " bytes)");
-				}
-			}
-      }	
-		return mMFileTileSource;
-	}
-	
 	/**
 	 * Checks if a given file is a valid mapsforge file
 	 * @param file2check
