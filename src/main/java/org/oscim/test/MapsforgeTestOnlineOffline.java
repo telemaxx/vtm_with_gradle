@@ -82,10 +82,10 @@ import javax.swing.JOptionPane;
 
 public class MapsforgeTestOnlineOffline extends GdxMapApp {
 
-	private static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
+	//private static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
 	//private static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map";
 	//private static String mapFile = "C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\hamburg_ML.map";
-	//private static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\niedersachsen_V5.map";
+	private static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\niedersachsen_V5.map";
 	//private static String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
 	private static String themeFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapstyles\\ELV4\\Elevate.xml";
 	//private String multithemeString = "elv-mtb,elv-hiking,elv-cycling";
@@ -102,8 +102,6 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	
 	private Boolean _isOnline = null;
 	private S3DBLayer _l_s3db = null;
-
-	private Boolean _s3db = null;
 	
 	private JFrame _pleaseWaitFrame;
 	private JDialog _pleaseWaitDialog;
@@ -150,13 +148,6 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
             .httpFactory(factory)
             .build();
 
-		TileSource TileSourceS3DB = OSciMap4TileSource.builder()
-            .httpFactory(factory)
-            .url("http://opensciencemap.org/tiles/s3db")
-            .zoomMin(16)
-            .zoomMax(16)
-            .build();
-
 		_l = mMap.setBaseMap(_tileSourceOffline);
 
       _l_s3db = new S3DBLayer(mMap,_l);	
@@ -165,9 +156,11 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		mMap.layers().add(_layer_HillShadingLayer);
 		
 		if (_isOnline) {
+		   System.out.println("Onlinemap, using building layer");
          _l = mMap.setBaseMap(_tileSourceOnline);
          mMap.layers().add(new BuildingLayer(mMap, _l));}  
 		else {
+		   System.out.println("Onlinemap, using s3db layer");
          _l = mMap.setBaseMap(_tileSourceOffline);
          mMap.layers().add(_l_s3db);}
 
@@ -243,12 +236,14 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 			mMap.setTheme(VtmThemes.OSMARENDER);
 			return true;
 		case Input.Keys.A:
+		   System.out.println("Offlinemap");
 			_l = mMap.setBaseMap(_tileSourceOffline);
 			loadTheme("1");
 			mMap.clearMap();
 			pleaseWaitWindow(false);
 			return true;
 		case Input.Keys.B:
+		   System.out.println("Onlinemap");
 			_l = mMap.setBaseMap(_tileSourceOnline);
 			loadTheme("2");
 			mMap.clearMap();
@@ -300,7 +295,7 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 
 	public static void main(String[] args) {
 		GdxMapApp.init();
-		GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,true));
-		//GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,false));
+		//GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,true));
+		GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,false));
 	}
 }

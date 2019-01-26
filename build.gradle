@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
@@ -51,5 +52,6 @@ dependencies {
 	implementation 'org.mapsforge:vtm-http:0.10.0'
 	implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 	implementation 'com.squareup.okio:okio:2.2.1'
+	
 }
 
