@@ -80,7 +80,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class MapsforgeTestOnlineOffline extends GdxMapApp {
+public class MapsforgeTestOnlineOfflineMultimap extends GdxMapApp {
 
 	//public static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
 	//public static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map";
@@ -117,11 +117,11 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	
 	float angle = 0;
 
-	MapsforgeTestOnlineOffline(String mapFile) {
+	MapsforgeTestOnlineOfflineMultimap(String mapFile) {
 		this(mapFile, false);
 	}
 
-	MapsforgeTestOnlineOffline(String mapFile, boolean s3db) {
+	MapsforgeTestOnlineOfflineMultimap(String mapFile, boolean s3db) {
 		this.mapFile = mapFile;
 		this.s3db = s3db;
 	}
