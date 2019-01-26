@@ -62,6 +62,7 @@ public class BitmapTileTest extends GdxMapApp {
         return false;
     }
 
+    
     @Override
     public void createLayers() {
         MapRenderer.setBackgroundColor(0xff888888);
