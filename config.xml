@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <layer id="elv-cycling" visible="true">
+		<name lang="de" value="Radfahren" />
+		<name lang="en" value="Cycling" />
+		<name lang="es" value="Ciclismo" />
+		<name lang="fr" value="Cyclisme" />
+		<name lang="it" value="Ciclismo" />
+    </layer>
+	<layer id="elv-buildings-m" enabled="false">
+		<name> lang="de" value="besondere Gebäude" </name>
+		<name lang="en" value="special buildings" />
+		<name lang="es" value="edificios especiales" />
+		<name lang="fr" value="bâtiments spéciaux" />
+		<name lang="it" value="edifici speciali" />
+		<cat id="buildings" />
+	</layer>
+	<layer id="elv-city" visible="true">
+		<name lang="de" value="Stadt" />
+		<name lang="en" value="City" />
+		<name lang="es" value="Ciudad" />
+		<name lang="fr" value="Ville" />
+	</layer>	
+	<item date="January 2009">
+        <mode>1</mode>
+        <unit>900</unit>
+        <current>1</current>
+        <interactive>1</interactive>
+    </item>
+    <item date="February 2009">
+        <mode>2</mode>
+        <unit>400</unit>
+        <current>2</current>
+        <interactive>5</interactive>
+    </item>
+    <item date="December 2009">
+        <mode>9</mode>
+        <unit>5</unit>
+        <current>100</current>
+        <interactive>3</interactive>
+    </item>
+</config>
