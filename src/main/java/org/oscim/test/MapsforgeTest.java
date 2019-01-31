@@ -17,6 +17,7 @@
 package org.oscim.test;
 
 
+import org.oscim.backend.CanvasAdapter;
 import org.oscim.backend.canvas.Bitmap;
 import org.oscim.core.MapPosition;
 import org.oscim.core.Tile;
@@ -68,6 +69,13 @@ public class MapsforgeTest extends GdxMapApp {
 
 	@Override
 	public void createLayers() {
+      System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI);
+      //CanvasAdapter.dpi = (int) (1.75 * CanvasAdapter.DEFAULT_DPI);
+      //Tile.SIZE = Tile.calculateTileSize();
+      
+      CanvasAdapter.userScale = 2.0f;
+      CanvasAdapter.textScale = 1.0f;
+	   
 		MapFileTileSource tileSource = new MapFileTileSource();
 		tileSource.setMapFile(mapFile.getAbsolutePath());
 		tileSource.setPreferredLanguage("zh");
@@ -96,11 +104,13 @@ public class MapsforgeTest extends GdxMapApp {
 		mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
 
 		MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
+		
 		BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
 
 
 		renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
 		renderer.setOffset(5, 0);
+		
 		mMap.layers().add(mapScaleBarLayer);
 
 
