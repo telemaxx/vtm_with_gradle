@@ -69,12 +69,12 @@ public class MapsforgeTest extends GdxMapApp {
 
 	@Override
 	public void createLayers() {
-      System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI);
+      System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI);  //DPI: 160.0
       //CanvasAdapter.dpi = (int) (1.75 * CanvasAdapter.DEFAULT_DPI);
       //Tile.SIZE = Tile.calculateTileSize();
       
-      CanvasAdapter.userScale = 2.0f;
-      CanvasAdapter.textScale = 1.0f;
+      CanvasAdapter.userScale = 3.0f;  // 3.0f
+      CanvasAdapter.textScale = 0.75f;  //0.75f
 	   
 		MapFileTileSource tileSource = new MapFileTileSource();
 		tileSource.setMapFile(mapFile.getAbsolutePath());
@@ -97,7 +97,8 @@ public class MapsforgeTest extends GdxMapApp {
 
 
 
-		DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
+		DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap,1f);
+
 		mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
 		mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
 		mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
