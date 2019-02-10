@@ -102,19 +102,25 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	
 	private Boolean _isOnline = null;
 	private S3DBLayer _l_s3db = null;
+	private BuildingLayer _l_building = null;
 	
 	private JFrame _pleaseWaitFrame;
 	private JDialog _pleaseWaitDialog;
 	private JLabel _pleaseWaitLabel;
 
-	MapsforgeTestOnlineOffline(String mapFile) {
-		this(mapFile, false);
-	}
 
-	MapsforgeTestOnlineOffline(String mapFile, boolean isOnline) {
-	   System.out.println("isonline: " + isOnline);
-		this.mapFile = mapFile;
-		this._isOnline = isOnline;
+
+	MapsforgeTestOnlineOffline(String mapFile, boolean runOnline) {
+	   if(runOnline) {
+         System.out.println("isonline: ");
+         this.mapFile = mapFile;
+         this._isOnline = runOnline;
+	   } else {
+	      System.out.println("isoffline: ");
+	      this.mapFile = mapFile;
+	      this._isOnline = runOnline;
+	   }
+  
 	}
 
 
@@ -148,21 +154,26 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
             .httpFactory(factory)
             .build();
 
-		_l = mMap.setBaseMap(_tileSourceOffline);
+		//_l = mMap.setBaseMap(_tileSourceOffline);
 
-      _l_s3db = new S3DBLayer(mMap,_l);	
+      
+      
 
 		_layer_HillShadingLayer = new BitmapTileLayer(mMap, hillshadingSource, 4000000);
 		mMap.layers().add(_layer_HillShadingLayer);
 		
 		if (_isOnline) {
 		   System.out.println("Onlinemap, using building layer");
+		   _l_building = new BuildingLayer(mMap, _l);
          _l = mMap.setBaseMap(_tileSourceOnline);
-         mMap.layers().add(new BuildingLayer(mMap, _l));}  
+         mMap.layers().add(_l_building);}  
 		else {
 		   System.out.println("Onlinemap, using s3db layer");
          _l = mMap.setBaseMap(_tileSourceOffline);
+         _l_s3db = new S3DBLayer(mMap,_l);
          mMap.layers().add(_l_s3db);}
+		
+		
 
 		loadTheme(null);
 		
@@ -237,14 +248,31 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 			return true;
 		case Input.Keys.A:
 		   System.out.println("Offlinemap");
+		   if (mMap.layers().contains(_l_building)) {
+		      mMap.layers().remove(_l_building);
+		      //_l_building = null;
+		   }
 			_l = mMap.setBaseMap(_tileSourceOffline);
+			if (!mMap.layers().contains(_l_s3db)) {
+			   _l_s3db = new S3DBLayer(mMap, _l);
+			   mMap.layers().add(_l_s3db);
+			}
 			loadTheme("1");
 			mMap.clearMap();
 			pleaseWaitWindow(false);
 			return true;
 		case Input.Keys.B:
 		   System.out.println("Onlinemap");
+		   			
+			if (mMap.layers().contains(_l_s3db)) {
+			   mMap.layers().remove(_l_s3db);
+			   //_l_s3db = null;
+			}
 			_l = mMap.setBaseMap(_tileSourceOnline);
+			if (!mMap.layers().contains(_l_building)) {
+			   _l_building = new BuildingLayer(mMap, _l);
+			   mMap.layers().add(_l_building);
+			}
 			loadTheme("2");
 			mMap.clearMap();
 			pleaseWaitWindow(false);

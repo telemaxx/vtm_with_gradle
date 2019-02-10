@@ -54,7 +54,7 @@ public class MarkerLayerTest extends GdxMapApp implements ItemizedLayer.OnItemGe
                     .build();
             mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
-            mMap.setMapPosition(0, 0, 1 << 2);
+            mMap.setMapPosition(0, 0, 1 << 4);
 
             Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
             MarkerSymbol symbol;

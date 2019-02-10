@@ -59,17 +59,19 @@ public class MapsforgeTest extends GdxMapApp {
 
 	MapsforgeTest(File mapFile) {
 		this(mapFile, false);
+		System.out.println("building layer");
 	}
 
 	MapsforgeTest(File mapFile, boolean s3db) {
 		this.mapFile = mapFile;
 		this.s3db = s3db;
+		System.out.println("s3db layer");
 	}
 
 
 	@Override
 	public void createLayers() {
-      System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI);  //DPI: 160.0
+      //System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI);  //DPI: 160.0
       //CanvasAdapter.dpi = (int) (1.75 * CanvasAdapter.DEFAULT_DPI);
       //Tile.SIZE = Tile.calculateTileSize();
       
@@ -88,11 +90,14 @@ public class MapsforgeTest extends GdxMapApp {
 		mMap.getEventLayer().enableRotation(false);  //wont work
 		mMap.getEventLayer().enableTilt(false); //dito
 
-		if (s3db)
-			mMap.layers().add(new S3DBLayer(mMap, l));
-		else
-			mMap.layers().add(new BuildingLayer(mMap, l));
-
+		if (s3db) {
+		   System.out.println("adding s3db layer");
+			mMap.layers().add(new S3DBLayer(mMap, l));}
+		else {
+		   System.out.println("adding building layer");
+//		   mMap.layers().add(new BuildingLayer(mMap, l,  17,  17, false));
+			mMap.layers().add(new BuildingLayer(mMap, l, false));
+			}
 		mMap.layers().add(new LabelLayer(mMap, l));
 
 
@@ -118,8 +123,9 @@ public class MapsforgeTest extends GdxMapApp {
 		MapInfo info = tileSource.getMapInfo();
 		MapPosition pos = new MapPosition();
 		pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
-
-		mMap.setMapPosition(pos);
+		
+		mMap.setMapPosition(53.08, 8.82, 1 << 17);
+		//mMap.setMapPosition(pos);
 	}
 
 	@Override
