@@ -91,7 +91,6 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	//private String multithemeString = "elv-mtb,elv-hiking,elv-cycling";
 	private String multithemeString = "elv-cycling";
 
-	private static VectorTileLayer _l;
 	private static TileSource _tileSourceOnline;
 	private static TileSource _tileSourceS3DB = null;
 	
@@ -99,16 +98,16 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 
 	private BitmapTileLayer _tilesourceHillshading = null;
 	private BitmapTileLayer _layer_HillShadingLayer = null;
+	private TileSource hillshadingSource;
 	
 	private Boolean _isOnline = null;
 	private S3DBLayer _l_s3db = null;
 	private BuildingLayer _l_building = null;
 	
-	private JFrame _pleaseWaitFrame;
-	private JDialog _pleaseWaitDialog;
-	private JLabel _pleaseWaitLabel;
-
-
+	private VectorTileLayer _l = null;
+	private LabelLayer _l_label = null;
+	
+	MapScaleBarLayer _mapScaleBarLayer;
 
 	MapsforgeTestOnlineOffline(String mapFile, boolean runOnline) {
 	   if(runOnline) {
@@ -127,7 +126,6 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	
 	@Override
 	public void createLayers() {
-	   init_pleaseWaitWindow();
 			    
 		MapRenderer.setBackgroundColor(0xff888888);
 		
@@ -144,7 +142,7 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		
       OkHttpEngine.OkHttpFactory factory = new OkHttpEngine.OkHttpFactory(builder);
  
-		TileSource hillshadingSource =  DefaultSources.HIKEBIKE_HILLSHADE
+		hillshadingSource =  DefaultSources.HIKEBIKE_HILLSHADE
 				.httpFactory(factory)
 				.zoomMin(1)
 				.zoomMax(16)
@@ -162,22 +160,35 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		_layer_HillShadingLayer = new BitmapTileLayer(mMap, hillshadingSource, 4000000);
 		mMap.layers().add(_layer_HillShadingLayer);
 		
+
+		
 		if (_isOnline) {
 		   System.out.println("Onlinemap, using building layer");
-		   _l_building = new BuildingLayer(mMap, _l);
          _l = mMap.setBaseMap(_tileSourceOnline);
-         mMap.layers().add(_l_building);}  
+         _l_building = new BuildingLayer(mMap, _l);
+         mMap.layers().add(_l_building);
+         //_l_s3db = new S3DBLayer(mMap,_l);
+         }  
 		else {
 		   System.out.println("Onlinemap, using s3db layer");
          _l = mMap.setBaseMap(_tileSourceOffline);
          _l_s3db = new S3DBLayer(mMap,_l);
-         mMap.layers().add(_l_s3db);}
+         mMap.layers().add(_l_s3db);
+         //_l_building = new BuildingLayer(mMap, _l);
+         }
+
+/*		_l_building = new BuildingLayer(mMap, _l);
+		
+		_l_s3db = new S3DBLayer(mMap,_l);
+		mMap.layers().add(_l_s3db);
+*/
+		_l_label = new LabelLayer(mMap, _l);  
+		mMap.layers().add(_l_label);
+
+
 		
 		
 
-		loadTheme(null);
-		
-		mMap.layers().add(new LabelLayer(mMap, _l));
 
 		DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap);
 		mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
@@ -185,19 +196,23 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
 		mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
 
-		MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
-		BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
+		_mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
+		BitmapRenderer renderer = _mapScaleBarLayer.getRenderer();
 
 		renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
 		renderer.setOffset(5, 0);
-		mMap.layers().add(mapScaleBarLayer);
+		mMap.layers().add(_mapScaleBarLayer);
 
+		loadTheme(null);
+		
 		mMap.setMapPosition(52.4, 9.79, 1 << 18);
 		 
 		MapPosition pos = new MapPosition();
 
 		pos.set(52.4, 9.79, 1 << 18, 180, 45, 45);
 
+		
+		
 	}
 
 	@Override
@@ -248,40 +263,58 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 			return true;
 		case Input.Keys.A:
 		   System.out.println("Offlinemap");
-		   if (mMap.layers().contains(_l_building)) {
-		      mMap.layers().remove(_l_building);
-		      //_l_building = null;
+		   
+		   System.out.println("layers before: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+		   for( int n = mMap.layers().size() - 1; n > 0 ;n--) { 
+		      System.out.println("layer " + n + "/" + mMap.layers().size()+ " " + mMap.layers().get(n).toString());
+		      mMap.layers().remove(n);
 		   }
-			_l = mMap.setBaseMap(_tileSourceOffline);
-			if (!mMap.layers().contains(_l_s3db)) {
-			   _l_s3db = new S3DBLayer(mMap, _l);
-			   mMap.layers().add(_l_s3db);
-			}
-			loadTheme("1");
+		   System.out.println("layers after: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+
+		   _l = mMap.setBaseMap(_tileSourceOffline);
+		   //mMap.layers().add(_l);
+		   mMap.layers().add(_layer_HillShadingLayer);
+		   _l_building = new S3DBLayer(mMap, _l);
+		   mMap.layers().add(_l_building);
+		   _l_label = new LabelLayer(mMap, _l);
+		   mMap.layers().add(_l_label);
+		   mMap.layers().add(_mapScaleBarLayer);
+		   
+
 			mMap.clearMap();
-			pleaseWaitWindow(false);
+         loadTheme("1");
 			return true;
 		case Input.Keys.B:
 		   System.out.println("Onlinemap");
-		   			
-			if (mMap.layers().contains(_l_s3db)) {
+	       
+         System.out.println("layers before: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+         for( int n = mMap.layers().size() - 1; n > 0 ;n--) { 
+            System.out.println("layer " + n + "/" + mMap.layers().size()+ " " + mMap.layers().get(n).toString());
+            mMap.layers().remove(n);
+         }
+         System.out.println("layers after: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+         
+			/*if (mMap.layers().contains(_l_s3db)) {
 			   mMap.layers().remove(_l_s3db);
-			   //_l_s3db = null;
-			}
+			}*/
 			_l = mMap.setBaseMap(_tileSourceOnline);
-			if (!mMap.layers().contains(_l_building)) {
-			   _l_building = new BuildingLayer(mMap, _l);
-			   mMap.layers().add(_l_building);
-			}
+			
+         //mMap.layers().add(_l);
+			_layer_HillShadingLayer =  new BitmapTileLayer(mMap, hillshadingSource, 4000000);
+			mMap.layers().add(_layer_HillShadingLayer);
+			_l_building = new BuildingLayer(mMap, _l);
+         mMap.layers().add(_l_building);
+         _l_label = new LabelLayer(mMap, _l);
+         mMap.layers().add(_l_label);
+         mMap.layers().add(_mapScaleBarLayer);
+
+         mMap.clearMap();
 			loadTheme("2");
-			mMap.clearMap();
-			pleaseWaitWindow(false);
 			return true;
       case Input.Keys.C:
          _l = mMap.setBaseMap(_tileSourceOnline);
          loadTheme("1");
          mMap.clearMap();
-         pleaseWaitWindow(true,"oooops");
          return true;			
 		case Input.Keys.NUM_9:
 			return true;
@@ -290,36 +323,8 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		return super.onKeyDown(keycode);
 	}
 	
-	  /**
-    * please wait window
-    * @param show true or false
-    * {@link http://www.java2s.com/Tutorials/Java/Swing_How_to/JFrame/Create_Modeless_and_model_Dialog_from_JFrame.htm}
-    */
-   public void pleaseWaitWindow(Boolean show) {
-      _pleaseWaitDialog.setVisible(show);
-      _pleaseWaitFrame.setVisible(show);
-   }
 
-   public void pleaseWaitWindow(Boolean show, String Text) {
-      _pleaseWaitLabel.setText(Text);
-      pleaseWaitWindow(show);
-   }  
-   
-   public void init_pleaseWaitWindow() {
-      _pleaseWaitLabel = new JLabel("loading theme, please be patient");
-      
-      _pleaseWaitFrame = new JFrame();
-      _pleaseWaitFrame.setUndecorated(true);
-      _pleaseWaitFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      _pleaseWaitFrame.pack();
 
-      _pleaseWaitDialog = new JDialog(_pleaseWaitFrame, "Please Wait...", ModalityType.MODELESS);
-      _pleaseWaitDialog.setLayout(new FlowLayout());
-      _pleaseWaitDialog.add(_pleaseWaitLabel);
-      _pleaseWaitDialog.add(Box.createRigidArea(new Dimension(200, 50)));
-      _pleaseWaitDialog.pack();
-      _pleaseWaitDialog.setLocationRelativeTo(null);
-   }
 
 	public static void main(String[] args) {
 		GdxMapApp.init();

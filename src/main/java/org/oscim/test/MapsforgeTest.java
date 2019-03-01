@@ -55,7 +55,10 @@ public class MapsforgeTest extends GdxMapApp {
 	private File mapFile;
 	private boolean s3db;
 	float angle = 0;
-
+	private VectorTileLayer l;
+	private BuildingLayer buildingLayer;
+	private S3DBLayer s3dbLayer;
+	private LabelLayer labelLayer;
 
 	MapsforgeTest(File mapFile) {
 		this(mapFile, false);
@@ -82,7 +85,7 @@ public class MapsforgeTest extends GdxMapApp {
 		tileSource.setMapFile(mapFile.getAbsolutePath());
 		tileSource.setPreferredLanguage("zh");
 
-		VectorTileLayer l = mMap.setBaseMap(tileSource);
+		l = mMap.setBaseMap(tileSource);
 		loadTheme(null);
 		//loadTheme("elv-mtb");
 
@@ -92,13 +95,16 @@ public class MapsforgeTest extends GdxMapApp {
 
 		if (s3db) {
 		   System.out.println("adding s3db layer");
-			mMap.layers().add(new S3DBLayer(mMap, l));}
+		   s3dbLayer = new S3DBLayer(mMap, l);
+			mMap.layers().add(s3dbLayer);}
 		else {
 		   System.out.println("adding building layer");
-//		   mMap.layers().add(new BuildingLayer(mMap, l,  17,  17, false));
-			mMap.layers().add(new BuildingLayer(mMap, l, false));
+		   buildingLayer = new BuildingLayer(mMap, l, false);
+			mMap.layers().add(buildingLayer);
 			}
-		mMap.layers().add(new LabelLayer(mMap, l));
+		
+		labelLayer = new LabelLayer(mMap, l);
+		mMap.layers().add(labelLayer);
 
 
 
@@ -126,6 +132,20 @@ public class MapsforgeTest extends GdxMapApp {
 		
 		mMap.setMapPosition(53.08, 8.82, 1 << 17);
 		//mMap.setMapPosition(pos);
+		
+		System.out.println("layers before: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+		//for( int n = 0; n < mMap.layers().size(); n++) {
+		for( int n = mMap.layers().size() - 1; n > 0 ;n--) { 
+		   System.out.println("layer " + n + "/" + mMap.layers().size()+ " " + mMap.layers().get(n).toString());
+		   mMap.layers().remove(n);
+		}
+		System.out.println("layers after: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+		mMap.layers().add(l);
+		mMap.layers().add(buildingLayer);
+		mMap.layers().add(labelLayer);
+		mMap.layers().add(mapScaleBarLayer);
+		mMap.clearMap();
+		System.out.println("layers final: " + mMap.layers().toString() + " size: " + mMap.layers().size());
 	}
 
 	@Override
