@@ -80,7 +80,6 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
               defaultMarkerCanvas.setBitmap(bitmapPoi);
               
               defaultMarkerCanvas.drawCircle(DefaultIconSize/2, DefaultIconSize/2, DefaultIconSize/2, fillPainter);
-              
            }
            
            //Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi2.png"));
