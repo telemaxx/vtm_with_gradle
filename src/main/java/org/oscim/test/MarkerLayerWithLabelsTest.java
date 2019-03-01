@@ -64,7 +64,26 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
            mMap.setMapPosition(52.513452, 13.363791, 1 << 13);
            
         // pink dot
-           Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
+           Bitmap bitmapPoi;
+           String markerRecource = "/res/marker_poi.png";
+           if (getClass().getResourceAsStream(markerRecource) != null) {
+              bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream(markerRecource));
+           } else {
+              int DefaultIconSize = 10;
+              
+              final Paint fillPainter = CanvasAdapter.newPaint();
+              fillPainter.setStyle(Paint.Style.FILL);
+              fillPainter.setColor(0xFFFF69B4); // 100percent pink
+              
+              bitmapPoi = CanvasAdapter.newBitmap(DefaultIconSize, DefaultIconSize, 0);
+              org.oscim.backend.canvas.Canvas defaultMarkerCanvas = CanvasAdapter.newCanvas();  
+              defaultMarkerCanvas.setBitmap(bitmapPoi);
+              
+              defaultMarkerCanvas.drawCircle(DefaultIconSize/2, DefaultIconSize/2, DefaultIconSize/2, fillPainter);
+              
+           }
+           
+           //Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi2.png"));
            MarkerSymbol symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
 
            mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
