@@ -37,7 +37,7 @@ public class OpenscimapWithBitmapLayers extends GdxMapApp {
 
       mMap.layers().add(new LabelLayer(mMap, l));
 
-      mMap.setMapPosition(52.513452, 13.363791, 1 << 13);
+      mMap.setMapPosition(52.25, 9.61, 1 << 13);
 
    }
 
