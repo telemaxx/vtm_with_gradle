@@ -30,13 +30,14 @@ import org.oscim.renderer.MapRenderer;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.bitmap.DefaultSources;
+import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
 public class BitmapTileTest extends GdxMapApp {
 
    private BitmapTileLayer mLayer = null;
    private BitmapTileLayer mShaded = null;
    private BitmapTileLayer _layer_HillShadingLayer = null;
-
+   private BitmapTileLayer cyclingLayer = null;
 
    @Override
    protected boolean onKeyDown(int keycode) {
@@ -62,6 +63,24 @@ public class BitmapTileTest extends GdxMapApp {
             mMap.layers().remove(mShaded);
             mShaded = null;
          } else {
+            mShaded = new BitmapTileLayer(mMap, DefaultSources.HIKEBIKE_HILLSHADE.build(), 4000000);
+            mMap.layers().add(mShaded);
+         }
+         mMap.clearMap();
+         return true;
+      } else if (keycode == Input.Keys.NUM_4) {
+         if (mShaded != null) {
+            mMap.layers().remove(mShaded);
+            mShaded = null;
+         } else {
+            TileSource cycling_ts = OSciMap4TileSource.builder()
+                  .httpFactory(new OkHttpEngine.OkHttpFactory())
+                  .url("https://tile.waymarkedtrails.org/cycling")
+                  .tilePath("/{Z}/{X}/{Y}.png")
+                  .build();
+            cyclingLayer = new BitmapTileLayer(mMap, cycling_ts, 4000000);
+            mMap.layers().add(cyclingLayer);
+            
             mShaded = new BitmapTileLayer(mMap, DefaultSources.HIKEBIKE_HILLSHADE.build(), 4000000);
             mMap.layers().add(mShaded);
          }
