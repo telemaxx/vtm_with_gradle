@@ -35,7 +35,7 @@ public class S3DBLayerTest extends GdxMapApp {
 			    .zoomMax(16)
 			    .build();
 
-		S3DBTileLayer layerBuilding = new S3DBTileLayer(mMap, ts_s3db);  //StDBTilelayer, not s3dblayer
+		S3DBTileLayer layerBuilding = new S3DBTileLayer(mMap, ts_s3db, false, true);  //StDBTilelayer, not s3dblayer
 		//BuildingLayer layerBuilding = new BuildingLayer(mMap, l);
 
 		mMap.layers().add(layerBuilding);

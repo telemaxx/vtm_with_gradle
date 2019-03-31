@@ -95,11 +95,13 @@ public class MapsforgeTest extends GdxMapApp {
 
 		if (s3db) {
 		   System.out.println("adding s3db layer");
-		   s3dbLayer = new S3DBLayer(mMap, l);
+		   s3dbLayer = new S3DBLayer(mMap, l, true);
+
 			mMap.layers().add(s3dbLayer);}
 		else {
 		   System.out.println("adding building layer");
-		   buildingLayer = new BuildingLayer(mMap, l, false);
+		   buildingLayer = new BuildingLayer(mMap, l, false, true);
+		   
 			mMap.layers().add(buildingLayer);
 			}
 		
@@ -179,7 +181,7 @@ public class MapsforgeTest extends GdxMapApp {
 	public static void main(String[] args) {
 		GdxMapApp.init();
 		//GdxMapApp.run(new MapsforgeTest(getMapFile(args)));
-		GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map")));
+		GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map"), false));
 		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\Switzerland_ML.map"))); 
 	}
 }
