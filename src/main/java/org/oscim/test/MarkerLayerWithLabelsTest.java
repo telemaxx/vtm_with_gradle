@@ -45,6 +45,7 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
    ItemizedLayer<MarkerItem> mMarkerLayer;
    private int _fgColor = 0xFF000000; // 100 percent black. AARRGGBB
    private int _bgColor = 0x80FF69B4; // 50 percent pink. AARRGGBB
+   static final boolean BILLBOARDS = false;
 
    @Override
    public void createLayers() {
@@ -196,7 +197,7 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
       markerCanvas.drawBitmap(titleBitmap, xSize/2-(titleWidth/2), 0);
       markerCanvas.drawBitmap(poiBitmap, xSize/2-(symbolWidth/2), ySize/2-(symbolWidth/2));
       
-      return (new MarkerSymbol(markerBitmap, HotspotPlace.CENTER, true));
+      return (new MarkerSymbol(markerBitmap, HotspotPlace.CENTER, BILLBOARDS));
    }
    
    @Override

@@ -38,68 +38,70 @@ import java.util.List;
 
 public class ClusterMarkerLayerTest extends MarkerLayerTest {
 
-    private static final int COUNT = 5;
-    private static final float STEP = 100f / 110000f; // roughly 100 meters
+   private static final int COUNT = 5;
+   private static final float STEP = 100f / 110000f; // roughly 100 meters
 
-    @Override
-    public void createLayers() {
-        try {
-            // Map events receiver
-            mMap.layers().add(new MapEventsReceiver(mMap));
+   @Override
+   public void createLayers() {
+      try {
+         boolean BILLBOARDS = false;
 
-            TileSource tileSource = DefaultSources.OPENSTREETMAP
-                    .httpFactory(new OkHttpEngine.OkHttpFactory())
-                    .build();
-            mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
+         // Map events receiver
+         mMap.layers().add(new MapEventsReceiver(mMap));
 
-            mMap.setMapPosition(53.08, 8.83, 1 << 15);
+         TileSource tileSource = DefaultSources.OPENSTREETMAP
+               .httpFactory(new OkHttpEngine.OkHttpFactory())
+               .build();
+         mMap.layers().add(new BitmapTileLayer(mMap, tileSource));
 
-            Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
-            final MarkerSymbol symbol;
-            if (BILLBOARDS)
-                symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);
-            else
-                symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.CENTER, false);
+         mMap.setMapPosition(53.08, 8.83, 1 << 15);
 
-            MarkerRendererFactory markerRendererFactory = new MarkerRendererFactory() {
-                @Override
-                public MarkerRenderer create(MarkerLayer markerLayer) {
-                    return new ClusterMarkerRenderer(markerLayer, symbol, new ClusterMarkerRenderer.ClusterStyle(Color.WHITE, Color.BLUE)) {
-                        @Override
-                        protected Bitmap getClusterBitmap(int size) {
-                            // Can customize cluster bitmap here
-                            return super.getClusterBitmap(size);
-                        }
-                    };
-                }
-            };
-            mMarkerLayer = new ItemizedLayer<>(
-                    mMap,
-                    new ArrayList<MarkerItem>(),
-                    markerRendererFactory,
-                    this);
-            mMap.layers().add(mMarkerLayer);
+         Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi.png"));
+         final MarkerSymbol symbol;
+         if (BILLBOARDS)
+            symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.BOTTOM_CENTER);
+         else
+            symbol = new MarkerSymbol(bitmapPoi, MarkerSymbol.HotspotPlace.CENTER, false);
 
-            // Create some markers spaced STEP degrees
-            List<MarkerItem> pts = new ArrayList<>();
-            GeoPoint center = mMap.getMapPosition().getGeoPoint();
-            for (int x = -COUNT; x < COUNT; x++) {
-                for (int y = -COUNT; y < COUNT; y++) {
-                    double random = STEP * Math.random() * 2;
-                    MarkerItem item = new MarkerItem(y + ", " + x, "Title","Description",
-                            new GeoPoint(center.getLatitude() + y * STEP + random, center.getLongitude() + x * STEP + random)
-                    );
-                    pts.add(item);
-                }
+         MarkerRendererFactory markerRendererFactory = new MarkerRendererFactory() {
+            @Override
+            public MarkerRenderer create(MarkerLayer markerLayer) {
+               return new ClusterMarkerRenderer(markerLayer, symbol, new ClusterMarkerRenderer.ClusterStyle(Color.WHITE, Color.BLUE)) {
+                  @Override
+                  protected Bitmap getClusterBitmap(int size) {
+                     // Can customize cluster bitmap here
+                     return super.getClusterBitmap(size);
+                  }
+               };
             }
-            mMarkerLayer.addItems(pts);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+         };
+         mMarkerLayer = new ItemizedLayer<>(
+               mMap,
+               new ArrayList<MarkerItem>(),
+               markerRendererFactory,
+               this);
+         mMap.layers().add(mMarkerLayer);
 
-    public static void main(String[] args) {
-        GdxMapApp.init();
-        GdxMapApp.run(new ClusterMarkerLayerTest());
-    }
+         // Create some markers spaced STEP degrees
+         List<MarkerItem> pts = new ArrayList<>();
+         GeoPoint center = mMap.getMapPosition().getGeoPoint();
+         for (int x = -COUNT; x < COUNT; x++) {
+            for (int y = -COUNT; y < COUNT; y++) {
+               double random = STEP * Math.random() * 2;
+               MarkerItem item = new MarkerItem(y + ", " + x, "Title","Description",
+                     new GeoPoint(center.getLatitude() + y * STEP + random, center.getLongitude() + x * STEP + random)
+                     );
+               pts.add(item);
+            }
+         }
+         mMarkerLayer.addItems(pts);
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+   }
+
+   public static void main(String[] args) {
+      GdxMapApp.init();
+      GdxMapApp.run(new ClusterMarkerLayerTest());
+   }
 }
