@@ -106,9 +106,7 @@ public class MapsforgeTest extends GdxMapApp {
 			}
 		
 		labelLayer = new LabelLayer(mMap, l);
-		mMap.layers().add(labelLayer);
-
-
+		//mMap.layers().add(labelLayer);
 
 		DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap,1f);
 
@@ -135,6 +133,7 @@ public class MapsforgeTest extends GdxMapApp {
 		mMap.setMapPosition(53.08, 8.82, 1 << 17);
 		//mMap.setMapPosition(pos);
 		
+		/*
 		System.out.println("layers before: " + mMap.layers().toString() + " size: " + mMap.layers().size());
 		//for( int n = 0; n < mMap.layers().size(); n++) {
 		for( int n = mMap.layers().size() - 1; n > 0 ;n--) { 
@@ -148,6 +147,7 @@ public class MapsforgeTest extends GdxMapApp {
 		mMap.layers().add(mapScaleBarLayer);
 		mMap.clearMap();
 		System.out.println("layers final: " + mMap.layers().toString() + " size: " + mMap.layers().size());
+		*/
 	}
 
 	@Override
@@ -181,7 +181,8 @@ public class MapsforgeTest extends GdxMapApp {
 	public static void main(String[] args) {
 		GdxMapApp.init();
 		//GdxMapApp.run(new MapsforgeTest(getMapFile(args)));
-		GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map"), false));
+		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map"), false));
+		GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\germany.map"), true));
 		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\Switzerland_ML.map"))); 
 	}
 }

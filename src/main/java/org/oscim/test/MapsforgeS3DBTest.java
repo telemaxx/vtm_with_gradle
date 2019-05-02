@@ -19,8 +19,11 @@ import org.oscim.gdx.GdxMapApp;
 import java.io.File;
 
 public class MapsforgeS3DBTest extends MapsforgeTest {
-	public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
+	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
+   //public static final String mapFile = "D:\\OfflineMaps\\mapfiles\\mf\\germany.map";
+   public static final String mapFile = "D:\\OfflineMaps\\mapfiles\\mf\\france.map";
+   
 	
     private MapsforgeS3DBTest(File mapFile) {
         super(mapFile, true);
