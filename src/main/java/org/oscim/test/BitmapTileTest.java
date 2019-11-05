@@ -29,6 +29,7 @@ import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.renderer.MapRenderer;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.OkHttpEngine;
+import org.oscim.tiling.source.bitmap.BitmapTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.oscimap4.OSciMap4TileSource;
 
@@ -77,10 +78,16 @@ public class BitmapTileTest extends GdxMapApp {
          }
          mMap.layers().remove(mLayer);
          
-         ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
+         ts = BitmapTileSource.builder()
+               .httpFactory(factory)
                .url("https://tile.waymarkedtrails.org/cycling")
                .tilePath("/{Z}/{X}/{Y}.png")
                .build();
+         
+         /*ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
+               .url("https://tile.waymarkedtrails.org/cycling")
+               .tilePath("/{Z}/{X}/{Y}.png")
+               .build();*/
          
          
          mLayer = new BitmapTileLayer(mMap, ts, 4000000);
@@ -99,12 +106,21 @@ public class BitmapTileTest extends GdxMapApp {
          }
          mMap.layers().remove(mLayer);
 
-         ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
+         ts = BitmapTileSource.builder()
+               .httpFactory(factory)
                .url("http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile")
                .tilePath("/{Z}/{Y}/{X}.png")
                .zoomMin(1)
                .zoomMax(18)
                .build();
+         
+         
+        /* ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
+               .url("http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile")
+               .tilePath("/{Z}/{Y}/{X}.png")
+               .zoomMin(1)
+               .zoomMax(18)
+               .build();*/
          mLayer = new BitmapTileLayer(mMap, ts, 4000000);
          mMap.layers().add(mLayer);
 
@@ -132,12 +148,20 @@ public class BitmapTileTest extends GdxMapApp {
       builder.cache(cache);
       factory = new OkHttpEngine.OkHttpFactory(builder);
       
-      ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
+      ts = BitmapTileSource.builder()
+            .httpFactory(factory)
+            .url("http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile")
+            .tilePath("/{Z}/{Y}/{X}.png")
+            .zoomMin(1)
+            .zoomMax(18)
+            .build();
+      
+      /*ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
             .url("http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile")
             .tilePath("/{Z}/{Y}/{X}.png")
             .zoomMin(1)
             .zoomMax(16)
-            .build();
+            .build();*/
       
       hillshadingSource =  DefaultSources.HIKEBIKE_HILLSHADE
             .httpFactory(factory)
