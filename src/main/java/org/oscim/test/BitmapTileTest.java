@@ -76,10 +76,13 @@ public class BitmapTileTest extends GdxMapApp {
             mShaded = null;
          }
          mMap.layers().remove(mLayer);
+         
          ts = DefaultSources.OPENSTREETMAP.httpFactory(factory)
                .url("https://tile.waymarkedtrails.org/cycling")
                .tilePath("/{Z}/{X}/{Y}.png")
                .build();
+         
+         
          mLayer = new BitmapTileLayer(mMap, ts, 4000000);
          mMap.layers().add(mLayer);
 
@@ -100,7 +103,7 @@ public class BitmapTileTest extends GdxMapApp {
                .url("http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile")
                .tilePath("/{Z}/{Y}/{X}.png")
                .zoomMin(1)
-               .zoomMax(16)
+               .zoomMax(18)
                .build();
          mLayer = new BitmapTileLayer(mMap, ts, 4000000);
          mMap.layers().add(mLayer);
