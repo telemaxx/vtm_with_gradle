@@ -196,9 +196,9 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 		mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
 		mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
 
-		_mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
-		BitmapRenderer renderer = _mapScaleBarLayer.getRenderer();
 
+		
+		BitmapRenderer renderer = _mapScaleBarLayer.getRenderer();
 		renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
 		renderer.setOffset(5, 0);
 		mMap.layers().add(_mapScaleBarLayer);
@@ -328,7 +328,7 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 
 	public static void main(String[] args) {
 		GdxMapApp.init();
-		//GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,true));
-		GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,false));
+		GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,true));
+		//GdxMapApp.run(new MapsforgeTestOnlineOffline(mapFile,false));
 	}
 }

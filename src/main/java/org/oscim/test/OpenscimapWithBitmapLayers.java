@@ -33,7 +33,7 @@ public class OpenscimapWithBitmapLayers extends GdxMapApp {
             .url("http://tile.waymarkedtrails.org/cycling")
             .build());
 
-      mMap.layers().add(cyclingLayer);
+      //mMap.layers().add(cyclingLayer);
 
       mMap.layers().add(new LabelLayer(mMap, l));
 

@@ -181,8 +181,8 @@ public class MapsforgeTest extends GdxMapApp {
 	public static void main(String[] args) {
 		GdxMapApp.init();
 		//GdxMapApp.run(new MapsforgeTest(getMapFile(args)));
-		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map"), false));
-		GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\germany.map"), true));
+		GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map"), false));
+		//GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\germany.map"), true));
 		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\Switzerland_ML.map"))); 
 	}
 }
