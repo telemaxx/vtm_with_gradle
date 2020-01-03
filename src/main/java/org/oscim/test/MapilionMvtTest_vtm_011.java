@@ -25,9 +25,10 @@ import org.oscim.layers.tile.vector.labeling.LabelLayer;
 import org.oscim.theme.VtmThemes;
 import org.oscim.tiling.source.OkHttpEngine;
 import org.oscim.tiling.source.UrlTileSource;
+import org.oscim.tiling.source.bitmap.DefaultSources;
 //import org.oscim.tiling.source.bitmap.DefaultSources;
 //import org.oscim.tiling.source.mvt.MapilionMvtTileSource;
-
+import org.oscim.tiling.source.mvt.MapilionMvtTileSource;
 
 import java.io.File;
 import java.util.UUID;
