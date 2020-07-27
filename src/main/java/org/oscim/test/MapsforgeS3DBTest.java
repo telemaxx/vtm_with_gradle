@@ -21,15 +21,15 @@ import java.io.File;
 public class MapsforgeS3DBTest extends MapsforgeTest {
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
-   public static final String mapFile = "D:\\OfflineMaps\\mapfiles\\mf\\germany.map";
+   public static final String mapFile = "D:\\OfflineMaps\\mapfiles\\mf\\niedersachsen_V5.map";
    //public static final String mapFile = "D:\\OfflineMaps\\mapfiles\\mf\\france.map";
-   
-	
-    private MapsforgeS3DBTest(File mapFile) {
+
+
+    private MapsforgeS3DBTest(final File mapFile) {
         super(mapFile, true);
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         GdxMapApp.init();
 //        GdxMapApp.run(new MapsforgeS3DBTest(getMapFile(args)));
         GdxMapApp.run(new MapsforgeS3DBTest(getMapFile(mapFile)));
