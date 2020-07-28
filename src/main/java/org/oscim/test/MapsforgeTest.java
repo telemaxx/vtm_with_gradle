@@ -38,16 +38,10 @@ import org.oscim.scalebar.MapScaleBarLayer;
 import org.oscim.scalebar.MetricUnitAdapter;
 
 import org.oscim.theme.VtmThemes;
-import org.oscim.theme.StreamRenderTheme;
-import org.oscim.theme.XmlRenderThemeMenuCallback;
-import org.oscim.theme.XmlRenderThemeStyleLayer;
-import org.oscim.theme.XmlRenderThemeStyleMenu;
-
 import org.oscim.tiling.source.mapfile.MapFileTileSource;
 import org.oscim.tiling.source.mapfile.MapInfo;
 
 import java.io.File;
-import java.util.Set;
 
 public class MapsforgeTest extends GdxMapApp {
 
@@ -60,28 +54,56 @@ public class MapsforgeTest extends GdxMapApp {
 	private S3DBLayer s3dbLayer;
 	private LabelLayer labelLayer;
 
-	MapsforgeTest(File mapFile) {
+	MapsforgeTest(final File mapFile) {
 		this(mapFile, false);
 		System.out.println("building layer");
 	}
 
-	MapsforgeTest(File mapFile, boolean s3db) {
+	MapsforgeTest(final File mapFile, final boolean s3db) {
 		this.mapFile = mapFile;
 		this.s3db = s3db;
 		System.out.println("s3db layer");
 	}
 
 
+	// static File getMapFile(String[] args) {
+	static File getMapFile(final String string) {
+		/*   if (args.length == 0) {
+            throw new IllegalArgumentException("missing argument: <mapFile>");
+        }*/
+
+		final File file = new File(string);
+		// File file = new File(args[0]);
+		if (!file.exists()) {
+			throw new IllegalArgumentException("file does not exist: " + file);
+		} else if (!file.isFile()) {
+			throw new IllegalArgumentException("not a file: " + file);
+		} else if (!file.canRead()) {
+			throw new IllegalArgumentException("cannot read file: " + file);
+		}
+		return file;
+	}
+
+	public static void main(final String[] args) {
+      System.out.println("main, starting init...");
+		GdxMapApp.init();
+		//GdxMapApp.run(new MapsforgeTest(getMapFile(args)));
+      System.out.println("main, starting run...");
+		GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\niedersachsen_V5.map"), false));
+		//GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\germany.map"), true));
+		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\Switzerland_ML.map")));
+	}
+
 	@Override
 	public void createLayers() {
-      //System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI);  //DPI: 160.0
+      System.out.println("DPI: " + CanvasAdapter.DEFAULT_DPI); //DPI: 160.0
       //CanvasAdapter.dpi = (int) (1.75 * CanvasAdapter.DEFAULT_DPI);
       //Tile.SIZE = Tile.calculateTileSize();
-      
+
       CanvasAdapter.userScale = 3.0f;  // 3.0f
       CanvasAdapter.textScale = 0.75f;  //0.75f
-	   
-		MapFileTileSource tileSource = new MapFileTileSource();
+
+		final MapFileTileSource tileSource = new MapFileTileSource();
 		tileSource.setMapFile(mapFile.getAbsolutePath());
 		tileSource.setPreferredLanguage("zh");
 
@@ -101,42 +123,42 @@ public class MapsforgeTest extends GdxMapApp {
 		else {
 		   System.out.println("adding building layer");
 		   buildingLayer = new BuildingLayer(mMap, l, false, true);
-		   
+
 			mMap.layers().add(buildingLayer);
 			}
-		
+
 		labelLayer = new LabelLayer(mMap, l);
 		//mMap.layers().add(labelLayer);
 
-		DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap,1f);
+		final DefaultMapScaleBar mapScaleBar = new DefaultMapScaleBar(mMap,1f);
 
 		mapScaleBar.setScaleBarMode(DefaultMapScaleBar.ScaleBarMode.BOTH);
 		mapScaleBar.setDistanceUnitAdapter(MetricUnitAdapter.INSTANCE);
 		mapScaleBar.setSecondaryDistanceUnitAdapter(ImperialUnitAdapter.INSTANCE);
 		mapScaleBar.setScaleBarPosition(MapScaleBar.ScaleBarPosition.BOTTOM_LEFT);
 
-		MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
-		
-		BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
+		final MapScaleBarLayer mapScaleBarLayer = new MapScaleBarLayer(mMap, mapScaleBar);
+
+		final BitmapRenderer renderer = mapScaleBarLayer.getRenderer();
 
 
 		renderer.setPosition(GLViewport.Position.BOTTOM_LEFT);
 		renderer.setOffset(5, 0);
-		
+
 		mMap.layers().add(mapScaleBarLayer);
 
 
-		MapInfo info = tileSource.getMapInfo();
-		MapPosition pos = new MapPosition();
+		final MapInfo info = tileSource.getMapInfo();
+		final MapPosition pos = new MapPosition();
 		pos.setByBoundingBox(info.boundingBox, Tile.SIZE * 4, Tile.SIZE * 4);
-		
+
 		mMap.setMapPosition(53.08, 8.82, 1 << 17);
 		//mMap.setMapPosition(pos);
-		
+
 		/*
 		System.out.println("layers before: " + mMap.layers().toString() + " size: " + mMap.layers().size());
 		//for( int n = 0; n < mMap.layers().size(); n++) {
-		for( int n = mMap.layers().size() - 1; n > 0 ;n--) { 
+		for( int n = mMap.layers().size() - 1; n > 0 ;n--) {
 		   System.out.println("layer " + n + "/" + mMap.layers().size()+ " " + mMap.layers().get(n).toString());
 		   mMap.layers().remove(n);
 		}
@@ -156,33 +178,7 @@ public class MapsforgeTest extends GdxMapApp {
 		super.dispose();
 	}
 
-	// static File getMapFile(String[] args) {
-	static File getMapFile(String string) {
-		/*   if (args.length == 0) {
-            throw new IllegalArgumentException("missing argument: <mapFile>");
-        }*/
-
-		File file = new File(string); 	 
-		// File file = new File(args[0]);
-		if (!file.exists()) {
-			throw new IllegalArgumentException("file does not exist: " + file);
-		} else if (!file.isFile()) {
-			throw new IllegalArgumentException("not a file: " + file);
-		} else if (!file.canRead()) {
-			throw new IllegalArgumentException("cannot read file: " + file);
-		}
-		return file;
-	}
-
 	protected void loadTheme(final String styleId) {
 		mMap.setTheme(VtmThemes.DEFAULT);
-	}
-
-	public static void main(String[] args) {
-		GdxMapApp.init();
-		//GdxMapApp.run(new MapsforgeTest(getMapFile(args)));
-		GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map"), false));
-		//GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\germany.map"), true));
-		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\Switzerland_ML.map"))); 
 	}
 }

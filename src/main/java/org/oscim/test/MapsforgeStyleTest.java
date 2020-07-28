@@ -24,8 +24,6 @@ import org.oscim.theme.XmlRenderThemeStyleMenu;
 
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -33,32 +31,38 @@ import java.util.Set;
 public class MapsforgeStyleTest extends MapsforgeTest {
 
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
-   public static final String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map";
+   //public static final String mapFile          = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\niedersachsen_V5.map";
+   public static final String mapFile          = "D:\\OfflineMaps\\mapfiles\\mf\\niedersachsen_V5.map";
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
 	public static final String themeFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapstyles\\ELV4\\Elevate.xml";
 	//public static final String multithemeString = "elv-mtb,elv-hiking,elv-cycling";
-	public static final String multithemeString = "elv-cycling";	
-	
-    private MapsforgeStyleTest(File mapFile) {
+	public static final String multithemeString = "elv-cycling";
+
+    private MapsforgeStyleTest(final File mapFile) {
         super(mapFile);
     }
 
-  
+
+    public static void main(final String[] args) {
+        GdxMapApp.init();
+        GdxMapApp.run(new MapsforgeStyleTest(getMapFile(mapFile)));
+    }
+
     @Override
     protected void loadTheme(final String styleId) {
 
    	 mMap.setTheme(new ExternalRenderTheme(themeFile, new XmlRenderThemeMenuCallback() {
    		 @Override
-   		 public Set<String> getCategories(XmlRenderThemeStyleMenu renderThemeStyleMenu) {
+   		 public Set<String> getCategories(final XmlRenderThemeStyleMenu renderThemeStyleMenu) {
    			 // Use the selected style or the default
-   			 String style = styleId != null ? styleId : renderThemeStyleMenu.getDefaultValue();
+   			 final String style = styleId != null ? styleId : renderThemeStyleMenu.getDefaultValue();
    			 System.out.println("#### load theme  default style: " + renderThemeStyleMenu.getDefaultValue());
    			 // Retrieve the layer from the style id
-   			 XmlRenderThemeStyleLayer renderThemeStyleLayer = renderThemeStyleMenu.getLayer(style);
+   			 final XmlRenderThemeStyleLayer renderThemeStyleLayer = renderThemeStyleMenu.getLayer(style);
    			// renderThemeStyleMenu.
    			 System.out.println("renderthemeStyleLayers: " + renderThemeStyleLayer.getTitles());
-   			 
-   			 Map<String, XmlRenderThemeStyleLayer> themeLayers =  renderThemeStyleMenu.getLayers();
+
+   			 final Map<String, XmlRenderThemeStyleLayer> themeLayers =  renderThemeStyleMenu.getLayers();
    			 System.out.println("themeLayers: " + themeLayers);
    			 //System.out.println("renderthemeStyleLayers: " + renderThemeStyleMenu.getLayers());
 
@@ -77,45 +81,33 @@ public class MapsforgeStyleTest extends MapsforgeTest {
    				 System.err.println("Invalid style " + style);
    				 return null;
    			 }
-   			 
+
    			 System.out.println("Renderstyle: " + renderThemeStyleLayer.getTitle(Locale.getDefault().getLanguage()));
 
    			 // First get the selected layer's categories that are enabled together
-   			 Set<String> categories = renderThemeStyleLayer.getCategories();
+   			 final Set<String> categories = renderThemeStyleLayer.getCategories();
    			 System.out.println("Categories: " + categories.toString());
-   			 
+
    			 // Then add the selected layer's overlays that are enabled individually
    			 // Here we use the style menu, but users can use their own preferences
-   			 
-   			 for (XmlRenderThemeStyleLayer overlay : renderThemeStyleLayer.getOverlays()) {
-   				 if (overlay.isEnabled())
-   					 //System.out.println("Overlay: " + overlay.getTitle("de"));
+
+   			 for (final XmlRenderThemeStyleLayer overlay : renderThemeStyleLayer.getOverlays()) {
+   				 if (overlay.isEnabled()) {
+                  //System.out.println("Overlay: " + overlay.getTitle("de"));
    					 categories.addAll(overlay.getCategories());
+               }
    			 }
-	 
+
    			 // This is the whole categories set to be enabled
    			 return categories;
    		 }
    	 }));
-   	 
-   	 
-    }
-    
-    public void parser(String multithemes) {
-		 if (multithemes == null) {
-			 System.err.println("empty theme " + multithemes);
-			 return;
-		 }
-   	 String[] a = multithemes.split(",");
-   	 System.out.println("laenge: " + a.length);
-   	 for (String oneTheme : a) {
-   		 System.out.println("onetheme: " + oneTheme);
-   	 }
-   	 
+
+
     }
 
     @Override
-    protected boolean onKeyDown(int keycode) {	 
+    protected boolean onKeyDown(final int keycode) {
         switch (keycode) {
             case Input.Keys.NUM_1:
                 loadTheme("elv-mtb");
@@ -133,15 +125,23 @@ public class MapsforgeStyleTest extends MapsforgeTest {
            case Input.Keys.NUM_4:
                loadTheme("elv-cycling");
                mMap.clearMap();
-               return true;          
+               return true;
        }
-        
+
         return super.onKeyDown(keycode);
     }
 
-    public static void main(String[] args) {
-        GdxMapApp.init();
-        GdxMapApp.run(new MapsforgeStyleTest(getMapFile(mapFile)));
+    public void parser(final String multithemes) {
+		 if (multithemes == null) {
+			 System.err.println("empty theme " + multithemes);
+			 return;
+		 }
+   	 final String[] a = multithemes.split(",");
+   	 System.out.println("laenge: " + a.length);
+   	 for (final String oneTheme : a) {
+   		 System.out.println("onetheme: " + oneTheme);
+   	 }
+
     }
 }
 
