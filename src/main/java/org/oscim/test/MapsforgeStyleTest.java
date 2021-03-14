@@ -32,9 +32,9 @@ public class MapsforgeStyleTest extends MapsforgeTest {
 
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
    //public static final String mapFile          = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\niedersachsen_V5.map";
-   public static final String mapFile          = "D:\\OfflineMaps\\mapfiles\\mf\\niedersachsen_V5.map";
+   public static final String mapFile          = "/home/top/oruxmaps/mapfiles/niedersachsen_oam.osm.map";
 	//public static final String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
-	public static final String themeFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapstyles\\ELV4\\Elevate.xml";
+	public static final String themeFile = "/home/top/oruxmaps/mapstyles/ELV4/Elevate.xml";
 	//public static final String multithemeString = "elv-mtb,elv-hiking,elv-cycling";
 	public static final String multithemeString = "elv-cycling";
 

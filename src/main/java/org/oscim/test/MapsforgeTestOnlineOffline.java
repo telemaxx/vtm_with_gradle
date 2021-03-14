@@ -85,9 +85,9 @@ public class MapsforgeTestOnlineOffline extends GdxMapApp {
 	//private static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\switzerland_V5.map";
 	//private static String mapFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapfiles\\Germany_North_ML.map";
 	//private static String mapFile = "C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\hamburg_ML.map";
-	private static String mapFile = "C:\\OfflineMaps\\mapfiles\\download.mapsforge.org\\niedersachsen_V5.map";
+	private static String mapFile = "/home/top/oruxmaps/mapfiles/niedersachsen_oam.osm.map";
 	//private static String mapFile = "C:\\OfflineMaps\\mapfiles\\www.openandromaps.org\\Switzerland_ML.map";
-	private static String themeFile = "C:\\Users\\top\\BTSync\\oruxmaps\\mapstyles\\ELV4\\Elevate.xml";
+	private static String themeFile = "/home/top/oruxmaps/mapstyles/ELV4/Elevate.xml";
 	//private String multithemeString = "elv-mtb,elv-hiking,elv-cycling";
 	private String multithemeString = "elv-cycling";
 
