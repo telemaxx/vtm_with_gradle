@@ -19,6 +19,11 @@ repositories {
     //mavenCentral()
 }
 
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_1_8
+//    targetCompatibility = JavaVersion.VERSION_1_8
+//}
+
 dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
@@ -27,17 +32,17 @@ dependencies {
 	
 	compile group: 'ch.qos.logback', name: 'logback-core', version: '1.3.0-alpha4'
 	
-	implementation 'org.mapsforge:vtm:0.13.0'
-	implementation 'org.mapsforge:vtm-themes:0.13.0'
-	implementation 'org.mapsforge:vtm-extras:0.13.0'
-	implementation 'org.mapsforge:vtm-gdx:0.13.0'
-	implementation 'org.mapsforge:vtm-desktop:0.13.0'
-	implementation 'org.mapsforge:vtm-desktop:0.13.0:natives-linux'
-	implementation 'org.mapsforge:vtm-desktop:0.13.0:natives-osx'
-	implementation 'org.mapsforge:vtm-desktop:0.13.0:natives-windows'
-	implementation 'org.mapsforge:vtm-desktop-lwjgl:0.13.0'
-	implementation 'org.mapsforge:vtm-http:0.13.0'
-	implementation 'org.mapsforge:vtm-mvt:0.13.0'
+	implementation 'org.mapsforge:vtm:0.16.0'
+	implementation 'org.mapsforge:vtm-themes:0.16.0'
+	implementation 'org.mapsforge:vtm-extras:0.16.0'
+	implementation 'org.mapsforge:vtm-gdx:0.16.0'
+	implementation 'org.mapsforge:vtm-desktop:0.16.0'
+	implementation 'org.mapsforge:vtm-desktop:0.16.0:natives-linux'
+	implementation 'org.mapsforge:vtm-desktop:0.16.0:natives-osx'
+	implementation 'org.mapsforge:vtm-desktop:0.16.0:natives-windows'
+	implementation 'org.mapsforge:vtm-desktop-lwjgl:0.16.0'
+	implementation 'org.mapsforge:vtm-http:0.16.0'
+	implementation 'org.mapsforge:vtm-mvt:0.16.0'
 
 	
 	testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.0-alpha4'
@@ -67,7 +72,8 @@ dependencies {
 	//implementation 'org.lwjgl:lwjgl:3.2.3:natives-macos'
 	//implementation 'org.lwjgl:lwjgl:3.2.3:natives-windows'
 
-	implementation 'com.github.blackears:svgSalamander:v1.1.1'
+//	implementation 'com.github.blackears:svgSalamander:v1.1.1'
+	implementation 'com.formdev:svgSalamander:1.1.2.4'
 
 	implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 	implementation 'com.squareup.okio:okio:2.2.1'
