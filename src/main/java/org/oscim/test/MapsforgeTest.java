@@ -89,8 +89,8 @@ public class MapsforgeTest extends GdxMapApp {
 		GdxMapApp.init();
 		//GdxMapApp.run(new MapsforgeTest(getMapFile(args)));
       System.out.println("main, starting run...");
-		GdxMapApp.run(new MapsforgeTest(getMapFile("/home/top/oruxmaps/mapfiles/niedersachsenV5.map"), false));
-		//GdxMapApp.run(new MapsforgeTest(getMapFile("D:\\OfflineMaps\\mapfiles\\mf\\germany.map"), true));
+		//GdxMapApp.run(new MapsforgeTest(getMapFile("/home/top/oruxmaps/mapfiles/niedersachsenV5.map"), false));
+		GdxMapApp.run(new MapsforgeTest(getMapFile("E:\\OfflineMaps\\mapfiles\\mf\\niedersachsen_V5.map"), true));
 		//GdxMapApp.run(new MapsforgeTest(getMapFile("C:\\Users\\top\\BTSync\\Exchange\\gps_tools\\maps\\Switzerland_ML.map")));
 	}
 
