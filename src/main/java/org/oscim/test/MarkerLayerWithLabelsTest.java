@@ -25,6 +25,7 @@ import org.oscim.event.MotionEvent;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.Layer;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
 import org.oscim.layers.tile.vector.VectorTileLayer;
@@ -40,9 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.oscim.layers.marker.MarkerSymbol.HotspotPlace;
-public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {
+public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {
 
-   ItemizedLayer<MarkerItem> mMarkerLayer;
+   //ItemizedLayer<MarkerItem> mMarkerLayer;
    private int _fgColor = 0xFF000000; // 100 percent black. AARRGGBB
    private int _bgColor = 0x80FF69B4; // 50 percent pink. AARRGGBB
    static final boolean BILLBOARDS = false;
@@ -86,11 +87,12 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
            //Bitmap bitmapPoi = CanvasAdapter.decodeBitmap(getClass().getResourceAsStream("/res/marker_poi2.png"));
            MarkerSymbol symbol = new MarkerSymbol(bitmapPoi, HotspotPlace.CENTER, false);
 
-           mMarkerLayer = new ItemizedLayer<>(mMap, new ArrayList<MarkerItem>(), symbol, this);
-           mMap.layers().add(mMarkerLayer);
+           ItemizedLayer   markerLayer = new ItemizedLayer(mMap, new ArrayList<MarkerInterface>(), symbol, this);
+           mMap.layers().add(markerLayer);
 
            //creating some poi's
-           List<MarkerItem> pts = new ArrayList<>();
+           //List<MarkerItem> pts = new ArrayList<>();
+           List<MarkerInterface> pts = new ArrayList<>();
            pts.add(new MarkerItem("Brandenburger Tor", "#1789-1793", new GeoPoint(52.516275, 13.377704)));
            pts.add(new MarkerItem("Siegessaeule, hidden description", "this is a hidden Description without a #", new GeoPoint(52.514543, 13.350119)));
            pts.add(new MarkerItem("Gleisdreieck, without description", "", new GeoPoint(52.499562, 13.374063)));
@@ -100,12 +102,14 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
                  + "is drawn on the map\n"
                  + "the rest is surpressed", new GeoPoint(52.509352, 13.375739)));
 
-           for (MarkerItem mi : pts) {
-              System.out.println("title: " + mi.title);
-              mi.setMarker(createAdvanceSymbol(mi,bitmapPoi));
+           for (MarkerInterface mi : pts) {
+        	  MarkerItem markerItem = (MarkerItem) mi;
+              System.out.println("title: " + markerItem.title);
+              markerItem.setMarker(createAdvanceSymbol(markerItem,bitmapPoi));
            }
            
-           mMarkerLayer.addItems(pts);
+           markerLayer.addItems(pts);
+           
            
        } catch (IOException e) {
            e.printStackTrace();
@@ -201,14 +205,16 @@ public class MarkerLayerWithLabelsTest extends GdxMapApp implements ItemizedLaye
    }
    
    @Override
-   public boolean onItemSingleTapUp(int index, MarkerItem item) {
-       System.out.println("Marker tap " + item.getTitle());
+   public boolean onItemSingleTapUp(int index, MarkerInterface mi) {
+	   MarkerItem markerItem = (MarkerItem) mi;
+       System.out.println("Marker tap " + markerItem.getTitle());
        return true;
    }
 
    @Override
-   public boolean onItemLongPress(int index, MarkerItem item) {
-       System.out.println("Marker long press " + item.getTitle());
+   public boolean onItemLongPress(int index, MarkerInterface mi) {
+	   MarkerItem markerItem = (MarkerItem) mi;
+       System.out.println("Marker long press " + markerItem.getTitle());
        return true;
    }
 

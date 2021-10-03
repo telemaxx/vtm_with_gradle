@@ -1,7 +1,6 @@
 /*
- * Copyright 2016-2018 devemux86
+ * Copyright 2016-2020 devemux86
  * Copyright 2017 nebular
- * Copyright 2019 telemaxx
  *
  * This program is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -25,6 +24,7 @@ import org.oscim.core.GeoPoint;
 import org.oscim.gdx.GdxMapApp;
 import org.oscim.layers.marker.ClusterMarkerRenderer;
 import org.oscim.layers.marker.ItemizedLayer;
+import org.oscim.layers.marker.MarkerInterface;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerLayer;
 import org.oscim.layers.marker.MarkerRenderer;
@@ -43,11 +43,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.geom.Path2D;
 
-public class BookmarkLayer extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerItem> {// extends MarkerLayerTest {
+public class BookmarkLayer extends GdxMapApp implements ItemizedLayer.OnItemGestureListener<MarkerInterface> {// extends MarkerLayerTest {
 
    static final boolean BILLBOARDS = true;
    MarkerSymbol mFocusMarker;
-   ItemizedLayer<MarkerItem> mMarkerLayer;
+   ItemizedLayer mMarkerLayer;
    private static final int COUNT = 5;
    private static final float STEP = 100f / 110000f; // roughly 100 meters
 
@@ -110,23 +110,23 @@ public class BookmarkLayer extends GdxMapApp implements ItemizedLayer.OnItemGest
                mFocusMarker = new MarkerSymbol(bitmapFocus, HotspotPlace.CENTER, false);
 
            
+
            MarkerRendererFactory markerRendererFactory = new MarkerRendererFactory() {
                @Override
                public MarkerRenderer create(MarkerLayer markerLayer) {
-                  //return new ClusterMarkerRenderer(markerLayer, symbol, null) {
                    return new ClusterMarkerRenderer(markerLayer, symbol, new ClusterMarkerRenderer.ClusterStyle(Color.WHITE, Color.BLUE)) {
                        @Override
                        protected Bitmap getClusterBitmap(int size) {
                            // Can customize cluster bitmap here
-                          return super.getClusterBitmap(size);
+                           return super.getClusterBitmap(size);
                        }
                    };
                }
            };
            
-           mMarkerLayer = new ItemizedLayer<>(
+           mMarkerLayer = new ItemizedLayer(
                    mMap,
-                   new ArrayList<MarkerItem>(),
+                   new ArrayList<MarkerInterface>(),
                    markerRendererFactory,
                    this);
            mMap.layers().add(mMarkerLayer);
@@ -134,7 +134,7 @@ public class BookmarkLayer extends GdxMapApp implements ItemizedLayer.OnItemGest
 
            // Create some markers spaced STEP degrees
            //Berlin: 52.513452, 13.363791
-           List<MarkerItem> pts = new ArrayList<>();
+           List<MarkerInterface> pts = new ArrayList<>();
            GeoPoint center = mMap.getMapPosition().getGeoPoint();
            for (int x = -COUNT; x < COUNT; x++) {
                for (int y = -COUNT; y < COUNT; y++) {
@@ -145,6 +145,7 @@ public class BookmarkLayer extends GdxMapApp implements ItemizedLayer.OnItemGest
                    pts.add(item);
                }
            }
+           
            mMarkerLayer.addItems(pts);
        } catch (IOException e) {
            e.printStackTrace();
@@ -156,24 +157,26 @@ public class BookmarkLayer extends GdxMapApp implements ItemizedLayer.OnItemGest
    
    
    @Override
-   public boolean onItemSingleTapUp(int index, MarkerItem item) {
-       if (item.getMarker() == null)
-           item.setMarker(mFocusMarker);
+   public boolean onItemSingleTapUp(int index, MarkerInterface mi) {
+	   MarkerItem markerItem = (MarkerItem) mi;
+       if (markerItem.getMarker() == null)
+    	   markerItem.setMarker(mFocusMarker);
        else
-           item.setMarker(null);
+    	   markerItem.setMarker(null);
 
-       System.out.println("Marker tap " + item.getTitle());
+       System.out.println("Marker tap " + markerItem.getTitle());
        return true;
    }
 
    @Override
-   public boolean onItemLongPress(int index, MarkerItem item) {
-       if (item.getMarker() == null)
-           item.setMarker(mFocusMarker);
+   public boolean onItemLongPress(int index, MarkerInterface mi) {
+	   MarkerItem markerItem = (MarkerItem) mi;
+       if (markerItem.getMarker() == null)
+    	   markerItem.setMarker(mFocusMarker);
        else
-           item.setMarker(null);
+    	   markerItem.setMarker(null);
 
-       System.out.println("Marker long press " + item.getTitle());
+       System.out.println("Marker long press " + markerItem.getTitle());
        return true;
    }
    

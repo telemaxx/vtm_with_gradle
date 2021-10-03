@@ -28,7 +28,6 @@ import org.oscim.tiling.source.UrlTileSource;
 import org.oscim.tiling.source.bitmap.DefaultSources;
 import org.oscim.tiling.source.mvt.MapilionMvtTileSource;
 
-
 import java.io.File;
 import java.util.UUID;
 
@@ -37,7 +36,7 @@ public class MapilionMvtTest extends GdxMapApp {
     // Metered API key for demonstration purposes
     private static final String API_KEY = "3b3d8353-0fb8-4513-bfe0-d620b2d77c45";
 
-    private static final boolean USE_CACHE = true;
+    private static final boolean USE_CACHE = false;
 
     @Override
     public void createLayers() {
@@ -59,17 +58,17 @@ public class MapilionMvtTest extends GdxMapApp {
 
         VectorTileLayer l = mMap.setBaseMap(tileSource);
         mMap.setTheme(VtmThemes.OPENMAPTILES);
-        //mMap.setTheme(VtmThemes.DEFAULT);
 
         // Hillshading
         UrlTileSource shadedTileSource = DefaultSources.MAPILION_HILLSHADE_2
                 .apiKey(API_KEY)
                 .httpFactory(factory)
                 .build();
-        //mMap.layers().add(new BitmapTileLayer(mMap, shadedTileSource));
+        mMap.layers().add(new BitmapTileLayer(mMap, shadedTileSource));
 
         mMap.layers().add(new BuildingLayer(mMap, l));
         mMap.layers().add(new LabelLayer(mMap, l));
+
 
 //        MapPosition pos = MapPreferences.getMapPosition();
 //        if (pos != null)

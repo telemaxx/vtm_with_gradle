@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-//import javax.annotation.Generated;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -144,7 +143,7 @@ public class MapsforgeStyleParser {
 	 */
 	public static void main(String args[]) {
 		MapsforgeStyleParser mapStyleParser = new MapsforgeStyleParser();
-		List<Style> styles = mapStyleParser.readXML("C:\\Users\\top\\BTSync\\oruxmaps\\mapstyles\\TMS\\Tiramisu_3_0_beta1.xml");
+		List<Style> styles = mapStyleParser.readXML("/home/top/oruxmaps/mapstyles/ELV4/Elevate.xml");
 		//List<Style> styles = mapStyleParser.readXML("C:\\Users\\top\\BTSync\\oruxmaps\\mapstyles\\ELV4\\Elevate.xml");
 		System.out.println("Stylecount: " + styles.size());
 		System.out.println("Defaultlanguage: " + mapStyleParser.getDefaultLanguage());
